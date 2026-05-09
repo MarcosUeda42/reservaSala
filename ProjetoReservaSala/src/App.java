@@ -7,12 +7,13 @@ public class App {
         User user1 = new User("Marcos", "Aluno");
         User user2 = new User("Ana", "Professor");
         Room room1 = FactoryRoom.createRoom("individual", 101, 0);
-        Room room2 = FactoryRoom.createRoom("lab", 102, 0);
-        Reserve reserve1 = new Reserve(user1, "2024-06-01 14:00", "2024-06-01 16:00", room1);
+
+        Reserve reserve1 = new Reserve(user1, "2024-06-01 14:00", "2024-06-01 16:00", room1); 
+        Reserve reserve2 = new Reserve(user1, "2024-06-02 10:00", "2024-06-02 12:00", room1);   
         reservation.addReserve(reserve1);
-        Reserve reserve2 = new Reserve(user2, "2024-06-01 14:00", "2024-06-01 16:00", room1);
         reservation.addReserve(reserve2);
         reservation.listReserves();
+        reservation.removeReserve(reserve1);
 
     }
 }
