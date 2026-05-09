@@ -15,6 +15,8 @@ public class Reserve implements Subject{
         this.start_schedule = LocalDateTime.parse(start_schedule, formatter);
         this.end_schedule = LocalDateTime.parse(end_schedule, formatter);
         this.room = room;
+        
+        addObserver(this.user);
         notifyObservers("Reserva Criada: " + this.user.getName() + " " + this.room.getRoomNumber());
     }
 
