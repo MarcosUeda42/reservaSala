@@ -1,39 +1,26 @@
 import java.util.List;
-import java.util.ArrayList;
 
 public class Reservation {
-    List<Reserve> reserves;
+    private Reservation_Strategy strategy;
 
     public Reservation() {
-        this.reserves = new ArrayList<>();
+        strategy = new First_Reservation();
     }
 
-    private boolean hasConflict(Reserve newReserve) {
-        for (Reserve existingReserve : reserves) {
-            if (existingReserve.getRoom().getRoomNumber() == newReserve.getRoom().getRoomNumber()) {
-                if (existingReserve.getStart_schedule().isBefore(newReserve.getEnd_schedule()) &&
-                    newReserve.getStart_schedule().isBefore(existingReserve.getEnd_schedule())) {
-                    return true;
-                }
-            }
-        }
-        return false;
+    public void setStrategy(Reservation_Strategy strategy) {
+        this.strategy = strategy;
     }
 
-    boolean addReserve(Reserve reserve){
-        if (hasConflict(reserve)) {
-            System.out.println("ERRO: Conflito");
-            return false;
-        }
-        reserves.add(reserve);
-        return true;
+    void addReserve(Reserve reserve){
+        strategy.addReserve(reserve);
     }
 
     void removeReserve(Reserve reserve){
-        reserves.remove(reserve);
+        strategy.getReserves().remove(reserve);
         reserve.notifyObservers("Reserva Cancelada: " + reserve.getUser().getName() + " " + reserve.getRoom().getRoomNumber());
     }
     void updateReserve(Reserve oldReserve, Reserve newReserve){
+        List<Reserve> reserves = strategy.getReserves();
         int index = reserves.indexOf(oldReserve);
         if (index != -1) {
             reserves.set(index, newReserve);
@@ -44,7 +31,7 @@ public class Reservation {
         }
     }
     void listReserves(){
-        for (Reserve reserve : reserves) {
+        for (Reserve reserve : strategy.getReserves()) {
             System.out.println(reserve.getUser().getName() + " reservou a sala " + reserve.getRoom().getRoomNumber() + " das " + reserve.getStart_schedule() + " às " + reserve.getEnd_schedule());
         }
     }
