@@ -7,7 +7,9 @@ public class Multimedia_Decorator extends Reserve_Decorator {
     }
 
     private void addMultimediaEquipment() {
-        notifyObservers("Equipamento Multimídia Adicionado: " + getUser().getName() + " " + getRoom().getRoomNumber());
+        notifyObservers("Equipamento Multimídia Adicionado: "
+         + getUser().getName() + " " + getRoom().getRoomNumber() 
+         + " - " + this.Equipment );
     }
 
     public String getEquipment() {

@@ -1,42 +1,19 @@
 import java.time.LocalDateTime;
-import Rooms.*;
+import java.time.format.DateTimeFormatter;
 
-public abstract class Reserve_Decorator implements Subject {
+public abstract class Reserve_Decorator extends Reserve {
     protected Reserve reserve;
 
     public Reserve_Decorator(Reserve reserve) {
+        super(reserve.getUser(), 
+              formatDateTime(reserve.getStart_schedule()), 
+              formatDateTime(reserve.getEnd_schedule()), 
+              reserve.getRoom());
         this.reserve = reserve;
     }
 
-    @Override
-    public void addObserver(Observer observer) {
-        reserve.addObserver(observer);
+    private static String formatDateTime(LocalDateTime dateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        return dateTime.format(formatter);
     }
-
-    @Override
-    public void removeObserver(Observer observer) {
-        reserve.removeObserver(observer);
-    }
-
-    @Override
-    public void notifyObservers(String message) {
-        reserve.notifyObservers(message);
-    }
-
-    public User getUser() {
-        return reserve.getUser();
-    }
-
-    public LocalDateTime getStart_schedule() {
-        return reserve.getStart_schedule();
-    }
-
-    public LocalDateTime getEnd_schedule() {
-        return reserve.getEnd_schedule();
-    }
-
-    public Room getRoom() {
-        return reserve.getRoom();
-    }
-    
 }
