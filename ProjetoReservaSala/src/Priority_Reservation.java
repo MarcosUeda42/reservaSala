@@ -1,4 +1,5 @@
 import java.util.List;
+import java.time.format.DateTimeFormatter;
 
 public class Priority_Reservation extends Reservation_Strategy {
 
@@ -6,18 +7,6 @@ public class Priority_Reservation extends Reservation_Strategy {
         super(reserves);
     }
 
-    private Reserve hasConflict(Reserve newReserve) {
-        for (Reserve existingReserve : this.reserves) {
-            if (existingReserve.getRoom().getRoomNumber() == newReserve.getRoom().getRoomNumber()) {
-                if (existingReserve.getStart_schedule().isBefore(newReserve.getEnd_schedule()) &&
-                    newReserve.getStart_schedule().isBefore(existingReserve.getEnd_schedule())) {
-                    return existingReserve;
-                }
-            }
-        }
-        return null;
-    }
-    
     private boolean hasPriority(Reserve newReserve, Reserve existingReserve) {
         if (newReserve.getUser().getRole().equals("Professor") && existingReserve.getUser().getRole().equals("Aluno")) {
             return true;
@@ -26,13 +15,28 @@ public class Priority_Reservation extends Reservation_Strategy {
     }
 
     void addReserve(Reserve reserve){
-        Reserve conflict = hasConflict(reserve);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String start = reserve.getStart_schedule().format(formatter);
+        String end = reserve.getEnd_schedule().format(formatter);
         
-        if (conflict == null) {
+        boolean available = Reservation.getInstance().roomAvailability(reserve.getRoom(), start, end);
+        
+        if (available) {
             this.reserves.add(reserve);
             reserve.notifyObservers("Reserva efetuada: " + reserve.getUser().getName() + " " + reserve.getRoom().getRoomNumber());
         } else {
-            if (hasPriority(reserve, conflict)) {
+            Reserve conflict = null;
+            for (Reserve existingReserve : this.reserves) {
+                if (existingReserve.getRoom().getRoomNumber() == reserve.getRoom().getRoomNumber()) {
+                    if (existingReserve.getStart_schedule().isBefore(reserve.getEnd_schedule()) &&
+                        reserve.getStart_schedule().isBefore(existingReserve.getEnd_schedule())) {
+                        conflict = existingReserve;
+                        break;
+                    }
+                }
+            }
+            
+            if (conflict != null && hasPriority(reserve, conflict)) {
                 conflict.notifyObservers("Reserva da sala " + conflict.getRoom().getRoomNumber() + " cancelada devido a prioridade");
                 this.reserves.remove(conflict);
                 reserve.notifyObservers("Reserva efetuada: " + reserve.getUser().getName() + " " + reserve.getRoom().getRoomNumber());

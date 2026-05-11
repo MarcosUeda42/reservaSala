@@ -1,4 +1,5 @@
 import java.util.List;
+import java.time.format.DateTimeFormatter;
 
 public class First_Reservation extends Reservation_Strategy {
 
@@ -6,20 +7,14 @@ public class First_Reservation extends Reservation_Strategy {
         super(reserves);
     }
 
-    private boolean hasConflict(Reserve newReserve) {
-        for (Reserve existingReserve : this.reserves) {
-            if (existingReserve.getRoom().getRoomNumber() == newReserve.getRoom().getRoomNumber()) {
-                if (existingReserve.getStart_schedule().isBefore(newReserve.getEnd_schedule()) &&
-                    newReserve.getStart_schedule().isBefore(existingReserve.getEnd_schedule())) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
     void addReserve(Reserve reserve){
-        if (hasConflict(reserve)) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String start = reserve.getStart_schedule().format(formatter);
+        String end = reserve.getEnd_schedule().format(formatter);
+        
+        boolean available = Reservation.getInstance().roomAvailability(reserve.getRoom(), start, end);
+        
+        if (!available) {
             reserve.notifyObservers("Conflito | Reserva de " + reserve.getUser().getName() + " " + reserve.getRoom().getRoomNumber() + " não efetuada");
             return;
         }
