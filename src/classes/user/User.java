@@ -1,3 +1,7 @@
+package classes.user;
+import observers.Observer;
+import observers.Subject;
+
 public class User implements Observer {
     private String name;
     private String role;

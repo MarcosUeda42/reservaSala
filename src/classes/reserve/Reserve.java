@@ -1,7 +1,12 @@
+package classes.reserve;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import Rooms.*;
+
+import classes.rooms.*;
+import classes.user.User;
+import observers.Observer;
+import observers.Subject;
 
 public class Reserve implements Subject{
     private User user;

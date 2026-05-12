@@ -1,3 +1,6 @@
+package decorators;
+import classes.reserve.Reserve;
+
 public class Multimedia_Decorator extends Reserve_Decorator {
     private String Equipment;
     public Multimedia_Decorator(Reserve reserve, String equipment) {

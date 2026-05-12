@@ -1,5 +1,8 @@
-import Rooms.*;
 import java.util.*;
+
+import classes.reserve.Reservation;
+import classes.rooms.*;
+import classes.user.User;
 
 public class App {
     public static void main(String[] args) throws Exception {

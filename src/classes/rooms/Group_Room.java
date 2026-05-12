@@ -1,4 +1,4 @@
-package Rooms;
+package classes.rooms;
 
 public class Group_Room implements Room {
     private String roomType;

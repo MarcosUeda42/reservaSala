@@ -1,8 +1,12 @@
+package classes.reserve;
 import java.util.List;
+
+import strategies.Reservation_Strategy;
+import classes.rooms.Room;
+
 import java.util.ArrayList;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import Rooms.Room;
 
 public class Reservation {
     private Reservation_Strategy strategy;
@@ -27,11 +31,11 @@ public class Reservation {
         this.strategy.setReserves(this.reserves);
     }
 
-    void addReserve(Reserve reserve){
+    public void addReserve(Reserve reserve){
         strategy.addReserve(reserve);
     }
 
-    void removeReserve(Reserve reserve){
+    public void removeReserve(Reserve reserve){
         this.reserves.remove(reserve);
         reserve.notifyObservers("Reserva Cancelada: " + reserve.getUser().getName() + " " + reserve.getRoom().getRoomNumber());
     }

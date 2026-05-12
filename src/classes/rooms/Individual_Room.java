@@ -1,11 +1,11 @@
-package Rooms;
+package classes.rooms;
 
-public class Lab_Room implements Room {
+public class Individual_Room implements Room {
     private String roomType;
     private int roomNumber;
 
-    public Lab_Room(int roomNumber) {
-        this.roomType = "Laboratório";
+    public Individual_Room(int roomNumber) {
+        this.roomType = "Sala Individual";
         this.roomNumber = roomNumber;
     }
 
