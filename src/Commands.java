@@ -30,7 +30,7 @@ public class Commands {
 
     void createRoom(List<Room> rooms) {
         int roomNumber = Input.getInt("Digite o número da sala: ");
-        String roomType = Input.getString("Digite o tipo da sala (Individual/Grupo/Lab): ");
+        String roomType = Input.getString("Digite o tipo da sala (Individual/Grupo/Lab/Especial): ");
         int capacity = Input.getInt("Digite a capacidade da sala (salas individuais tem capacidade 1): ");
 
         Room room = Factory_Room.createRoom(roomType, roomNumber, capacity);
@@ -88,7 +88,6 @@ public class Commands {
                 System.out.println("Opção inválida, continuando sem serviço extra.\n");
         }
 
-        // Usar o Proxy para validar acesso
         User user = users.stream().filter(u -> u.getName().equals(userName)).findFirst().orElse(null);
         Room room = rooms.stream().filter(r -> Integer.toString(r.getRoomNumber()).equals(roomNumStr)).findFirst().orElse(null);
         
