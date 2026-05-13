@@ -1,4 +1,8 @@
+package classes.reserve;
 import java.util.List;
+
+import strategies.Reservation_Strategy;
+
 import java.time.format.DateTimeFormatter;
 
 public class First_Reservation extends Reservation_Strategy {
@@ -7,7 +11,8 @@ public class First_Reservation extends Reservation_Strategy {
         super(reserves);
     }
 
-    void addReserve(Reserve reserve){
+    @Override
+    public void addReserve(Reserve reserve){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         String start = reserve.getStart_schedule().format(formatter);
         String end = reserve.getEnd_schedule().format(formatter);

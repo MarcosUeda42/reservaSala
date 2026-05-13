@@ -1,5 +1,8 @@
+package decorators;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+
+import classes.reserve.Reserve;
 
 public abstract class Reserve_Decorator extends Reserve {
     protected Reserve reserve;

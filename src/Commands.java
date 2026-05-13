@@ -1,8 +1,19 @@
 import java.util.List;
+
+import classes.reserve.First_Reservation;
+import classes.reserve.Priority_Reservation;
+import classes.reserve.Reservation;
+import classes.reserve.Reserve;
+import classes.rooms.Factory_Room;
+import classes.rooms.Room;
+import classes.rooms.Special_Room;
+import classes.user.User;
+import decorators.Cleaning_Decorator;
+import decorators.Multimedia_Decorator;
+import proxys.Rooms_Proxy;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import Rooms.FactoryRoom;
-import Rooms.Room;
 
 public class Commands {
     void createUser(List<User> users) {
@@ -19,10 +30,10 @@ public class Commands {
 
     void createRoom(List<Room> rooms) {
         int roomNumber = Input.getInt("Digite o número da sala: ");
-        String roomType = Input.getString("Digite o tipo da sala (Individual/Grupo/Lab): ");
+        String roomType = Input.getString("Digite o tipo da sala (Individual/Grupo/Lab/Especial): ");
         int capacity = Input.getInt("Digite a capacidade da sala (salas individuais tem capacidade 1): ");
 
-        Room room = FactoryRoom.createRoom(roomType, roomNumber, capacity);
+        Room room = Factory_Room.createRoom(roomType, roomNumber, capacity);
         
         if (room != null) {
             rooms.add(room);
@@ -77,8 +88,16 @@ public class Commands {
                 System.out.println("Opção inválida, continuando sem serviço extra.\n");
         }
 
-        reservation.addReserve(reserve);
-        System.out.println("Reserva feita com sucesso!\n");
+        User user = users.stream().filter(u -> u.getName().equals(userName)).findFirst().orElse(null);
+        Room room = rooms.stream().filter(r -> Integer.toString(r.getRoomNumber()).equals(roomNumStr)).findFirst().orElse(null);
+        
+        if (room instanceof Special_Room) {
+            Rooms_Proxy proxy = new Rooms_Proxy((Special_Room) room, startSchedule, endSchedule);
+            proxy.reserve(user);
+        } else {
+            reservation.addReserve(reserve);
+            System.out.println("Reserva feita com sucesso!\n");
+        }
     }
 
     void setStrategy(Reservation reservation){

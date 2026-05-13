@@ -1,3 +1,6 @@
+package decorators;
+import classes.reserve.Reserve;
+
 public class Cleaning_Decorator extends Reserve_Decorator {
 
     public Cleaning_Decorator(Reserve reserve) {
