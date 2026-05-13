@@ -6,9 +6,11 @@ import classes.reserve.Reservation;
 import classes.reserve.Reserve;
 import classes.rooms.Factory_Room;
 import classes.rooms.Room;
+import classes.rooms.Special_Room;
 import classes.user.User;
 import decorators.Cleaning_Decorator;
 import decorators.Multimedia_Decorator;
+import proxys.Rooms_Proxy;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -86,8 +88,17 @@ public class Commands {
                 System.out.println("Opção inválida, continuando sem serviço extra.\n");
         }
 
-        reservation.addReserve(reserve);
-        System.out.println("Reserva feita com sucesso!\n");
+        // Usar o Proxy para validar acesso
+        User user = users.stream().filter(u -> u.getName().equals(userName)).findFirst().orElse(null);
+        Room room = rooms.stream().filter(r -> Integer.toString(r.getRoomNumber()).equals(roomNumStr)).findFirst().orElse(null);
+        
+        if (room instanceof Special_Room) {
+            Rooms_Proxy proxy = new Rooms_Proxy((Special_Room) room, startSchedule, endSchedule);
+            proxy.reserve(user);
+        } else {
+            reservation.addReserve(reserve);
+            System.out.println("Reserva feita com sucesso!\n");
+        }
     }
 
     void setStrategy(Reservation reservation){
